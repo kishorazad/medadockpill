@@ -12,7 +12,7 @@ console.log('Initializing email service...');
 // Track email service availability
 let resendInitialized = false;
 let sendgridInitialized = false;
-let zohomailInitialized = false;
+let zohomailInitialized = true;
 
 // Resend webhook and domain configuration
 const RESEND_WEBHOOK_SECRET = 'whsec_vCgU7bJn+iXjrIqA1lOQ5kW3WYkOiEnx';
