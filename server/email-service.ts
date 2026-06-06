@@ -1,3 +1,44 @@
+
+import axios from "axios";
+
+import type { Transporter } from 'nodemailer';
+
+export async function sendPasswordResetOTP(
+  email: string,
+  otp: string
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Password Reset OTP",
+    `Your OTP is ${otp}`,
+    `<h2>Your OTP is ${otp}</h2>`
+  );
+}
+
+export async function sendWelcomeEmail(
+  email: string,
+  name: string
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Welcome to MedaDock",
+    `Welcome ${name}`,
+    `<h1>Welcome ${name}</h1>`
+  );
+}
+
+export async function sendLoginOTP(
+  email: string,
+  otp: string
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Login OTP",
+    `Your OTP is ${otp}`,
+    `<h2>Your OTP is ${otp}</h2>`
+  );
+}
+
 export async function sendEmail(
   to: string,
   subject: string,
@@ -44,10 +85,10 @@ export async function sendEmail(
           }
         );
 
-        console.log(
-          "✅ BREVO EMAIL SENT",
-          response.data
-        );
+        console.error(
+  "❌ BREVO ERROR",
+  error.response?.data || error.message
+);
 
         return true;
       } catch (error: any) {
@@ -96,7 +137,7 @@ export async function sendEmail(
         html,
         process.env.EMAIL_FROM ||
           process.env.SENDER_EMAIL ||
-          "noreply@medadock.com"
+          "info@1tab.in"
       );
     }
 
@@ -113,4 +154,15 @@ export async function sendEmail(
 
     return false;
   }
+}
+
+export function generateOTP(length: number = 6): string {
+  const digits = "0123456789";
+  let otp = "";
+
+  for (let i = 0; i < length; i++) {
+    otp += digits[Math.floor(Math.random() * digits.length)];
+  }
+
+  return otp;
 }
