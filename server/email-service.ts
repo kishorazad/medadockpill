@@ -69,12 +69,12 @@ try {
     console.log('ZOHOMAIL credentials found, initializing Zoho Mail client');
     
     const port = parseInt(process.env.ZOHOMAIL_PORT);
-    const secure = port === 465; // Use secure for port 465, otherwise false
+    const secure = port === 587; // Use secure for port 465, otherwise false
     
     zohoTransporter = nodemailer.createTransport({
       host: process.env.ZOHOMAIL_HOST,
       port: port,
-      secure: secure,
+      secure: false,
       auth: {
         user: process.env.ZOHOMAIL_USERNAME,
         pass: process.env.ZOHOMAIL_PASSWORD,
