@@ -78,16 +78,14 @@ try {
     
     // Verify connection
     zohoTransporter.verify((error) => {
-      if (error) {
-        console.error('❌ Error verifying Zoho Mail connection:', error);
-        zohomailInitialized = false;
-      } else {
-        zohomailInitialized = true;
-        console.log('✅ Zoho Mail client initialized and verified successfully');
-        // Log final email service status once ZohoMail initialization is complete
-        console.log(`✅ FINAL EMAIL SERVICE STATUS: Resend [${resendInitialized ? 'READY' : 'NOT AVAILABLE'}], SendGrid [${sendgridInitialized ? 'READY' : 'NOT AVAILABLE'}], ZohoMail [READY]`);
-      }
-    });
+  if (error) {
+    console.error('❌ ZOHO VERIFY ERROR:', error);
+    zohomailInitialized = false;
+  } else {
+    console.log('✅ ZOHO VERIFIED');
+    zohomailInitialized = true;
+  }
+});
   } else {
     console.warn('⚠️ ZOHOMAIL credentials not complete, Zoho Mail service will not be available');
   }
@@ -96,8 +94,11 @@ try {
 }
 
 // Verify that at least one email service is available
-if (!resendInitialized && !sendgridInitialized && !zohomailInitialized) {
-  console.error('❌ NO EMAIL SERVICE AVAILABLE! Neither Resend, SendGrid, nor Zoho Mail is properly configured.');
+setTimeout(() => {
+  if (!resendInitialized && !sendgridInitialized && !zohomailInitialized) {
+    console.error('❌ NO EMAIL SERVICE AVAILABLE!');
+  }
+}, 5000);
   console.error('Email functionality will not work until at least one service is configured.');
 } else {
   // Initial status
@@ -427,7 +428,10 @@ async function sendWithZohoMail(to: string, subject: string, text: string, html:
       text: text,
       html: html || text
     };
-    
+    console.log("SMTP USER:", process.env.ZOHOMAIL_USERNAME);
+console.log("SMTP HOST:", process.env.ZOHOMAIL_HOST);
+console.log("SMTP PORT:", process.env.ZOHOMAIL_PORT);
+console.log("EMAIL TO:", to);
     // Send email with Zoho Mail
     const info = await zohoTransporter.sendMail(mailOptions);
     
