@@ -94,19 +94,17 @@ try {
 }
 
 // Verify that at least one email service is available
+// Verify that at least one email service is available
 setTimeout(() => {
   if (!resendInitialized && !sendgridInitialized && !zohomailInitialized) {
     console.error('❌ NO EMAIL SERVICE AVAILABLE!');
+    console.error('Email functionality will not work until at least one service is configured.');
+  } else {
+    console.log(
+      `Email service status: Resend [${resendInitialized ? 'READY' : 'NOT AVAILABLE'}], SendGrid [${sendgridInitialized ? 'READY' : 'NOT AVAILABLE'}], ZohoMail [${zohomailInitialized ? 'READY' : 'NOT AVAILABLE'}]`
+    );
   }
 }, 5000);
-  console.error('Email functionality will not work until at least one service is configured.');
-} else {
-  // Initial status
-console.log(`Email service status: Resend [${resendInitialized ? 'READY' : 'NOT AVAILABLE'}], SendGrid [${sendgridInitialized ? 'READY' : 'NOT AVAILABLE'}], ZohoMail [INITIALIZING...]`);
-
-// We'll log the final status once ZohoMail is fully initialized
-}
-
 /**
  * Send an email using ZohoMail as primary provider with fallbacks
  * @param to Recipient email address
