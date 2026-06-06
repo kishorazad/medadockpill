@@ -3,6 +3,8 @@ import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
 import * as Brevo from '@getbrevo/brevo';
 import type { Transporter } from 'nodemailer';
+console.log("BREVO EXPORTS:", Object.keys(Brevo));
+
 const brevo = new Brevo.TransactionalEmailsApi();
 
 brevo.setApiKey(
