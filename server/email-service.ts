@@ -1,7 +1,6 @@
 
 import axios from "axios";
 
-import type { Transporter } from 'nodemailer';
 
 export async function sendPasswordResetOTP(
   email: string,
@@ -113,37 +112,29 @@ export async function sendEmail(
         console.log(
           `📧 [${timestamp}] BREVO: Sending email`
         );
-
-        const response = await axios.post(
-          "https://api.brevo.com/v3/smtp/email",
-          {
-            sender: {
-              name: "MedaDock",
-              email: process.env.SENDER_EMAIL,
-            },
-            to: [
-              {
-                email: to,
-              },
-            ],
-            subject,
-            htmlContent: html || text,
-          },
-          {
-            headers: {
-              accept: "application/json",
-              "api-key": process.env.BREVO_API_KEY,
-              "content-type": "application/json",
-            },
-          }
-        );
-
-        console.error(
-  "❌ BREVO ERROR",
-  error.response?.data || error.message
+const response = await axios.post(
+  "https://api.brevo.com/v3/smtp/email",
+  {
+    sender: {
+      name: "MedaDock",
+      email: process.env.SENDER_EMAIL,
+    },
+    to: [{ email: to }],
+    subject,
+    htmlContent: html || text,
+  },
+  {
+    headers: {
+      accept: "application/json",
+      "api-key": process.env.BREVO_API_KEY,
+      "content-type": "application/json",
+    },
+  }
 );
 
-        return true;
+console.log("✅ BREVO EMAIL SENT", response.data);
+
+return true;
       } catch (error: any) {
         console.error(
           "❌ BREVO ERROR",
@@ -155,44 +146,8 @@ export async function sendEmail(
     // ==========================
     // ZOHO FALLBACK
     // ==========================
-    if (
-      process.env.ZOHOMAIL_USERNAME &&
-      zohoTransporter
-    ) {
-      console.log(
-        `📧 [${timestamp}] FALLBACK TO ZOHO`
-      );
+    
 
-      return await sendWithZohoMail(
-        to,
-        subject,
-        text,
-        html,
-        process.env.ZOHOMAIL_USERNAME
-      );
-    }
-
-    // ==========================
-    // SENDGRID FALLBACK
-    // ==========================
-    if (
-      process.env.SENDGRID_API_KEY &&
-      sendgridInitialized
-    ) {
-      console.log(
-        `📧 [${timestamp}] FALLBACK TO SENDGRID`
-      );
-
-      return await sendWithSendGrid(
-        to,
-        subject,
-        text,
-        html,
-        process.env.EMAIL_FROM ||
-          process.env.SENDER_EMAIL ||
-          "info@1tab.in"
-      );
-    }
 
     console.error(
       "❌ NO EMAIL PROVIDER AVAILABLE"
