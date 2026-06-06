@@ -15,6 +15,36 @@ export async function sendPasswordResetOTP(
   );
 }
 
+export async function sendPasswordResetConfirmation(
+  email: string
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Password Reset Successful",
+    "Your password has been changed successfully.",
+    `
+      <h2>Password Reset Successful</h2>
+      <p>Your password has been changed successfully.</p>
+    `
+  );
+}
+
+export async function sendPasswordResetToken(
+  email: string,
+  token: string
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Password Reset Link",
+    `Reset Token: ${token}`,
+    `
+      <h2>Password Reset</h2>
+      <p>Your reset token is:</p>
+      <h3>${token}</h3>
+    `
+  );
+}
+
 export async function sendWelcomeEmail(
   email: string,
   name: string
