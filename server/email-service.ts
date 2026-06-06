@@ -315,7 +315,7 @@ if (process.env.ZOHOMAIL_USERNAME && zohoTransporter) {
         }
         
         // Fall back to ZohoMail if available
-        if (process.env.ZOHOMAIL_USERNAME && zohomailInitialized) {
+       if (process.env.ZOHOMAIL_USERNAME && zohoTransporter) {
           console.log(`📧 [${timestamp}] RESEND ERROR: Falling back to ZohoMail`);
           return sendWithZohoMail(to, subject, text, html, fromEmail);
         }
@@ -329,7 +329,7 @@ if (process.env.ZOHOMAIL_USERNAME && zohoTransporter) {
       return sendWithSendGrid(to, subject, text, html, fromEmail);
     } 
     // Use ZohoMail if neither Resend nor SendGrid is configured
-    else if (process.env.ZOHOMAIL_USERNAME && zohomailInitialized) {
+    else if (process.env.ZOHOMAIL_USERNAME && zohoTransporter) {
       console.log(`📧 [${timestamp}] Using ZohoMail as primary sender since Resend and SendGrid are not available`);
       return sendWithZohoMail(to, subject, text, html, fromEmail);
     }
