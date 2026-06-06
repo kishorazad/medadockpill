@@ -92,7 +92,7 @@ try {
 } catch (error) {
   console.error('❌ Error initializing Zoho Mail client:', error);
 }
-
+**/
 // Verify that at least one email service is available
 // Verify that at least one email service is available
 setTimeout(() => {
@@ -113,31 +113,7 @@ setTimeout(() => {
  * @param html HTML email content (optional)
  * @returns Promise resolving to true if successful
  */
-async function sendWithBrevo(
-  to: string,
-  subject: string,
-  text: string,
-  html?: string
-): Promise<boolean> {
-  try {
-    await brevo.sendTransacEmail({
-      sender: {
-        email: process.env.EMAIL_FROM!,
-        name: "PillNow"
-      },
-      to: [{ email: to }],
-      subject,
-      htmlContent: html || text,
-      textContent: text
-    });
-
-    console.log(`✅ BREVO EMAIL SENT TO ${to}`);
-    return true;
-  } catch (error) {
-    console.error("❌ BREVO ERROR", error);
-    return false;
-  }
-}
+*/
 
 export async function sendEmail(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   try {
@@ -165,7 +141,8 @@ export async function sendEmail(to: string, subject: string, text: string, html?
       }
     }
     // Brevo Primary Provider
-if (process.env.BREVO_API_KEY) {
+    
+if (false) {
   try {
     console.log(`📧 [${timestamp}] BREVO: Using Brevo as primary provider`);
 
