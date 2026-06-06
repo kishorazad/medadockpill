@@ -56,6 +56,29 @@ export async function sendWelcomeEmail(
     `<h1>Welcome ${name}</h1>`
   );
 }
+export async function sendAppointmentConfirmation(
+  email: string,
+  appointmentData: any
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Appointment Confirmed",
+    "Your appointment has been confirmed",
+    `<h2>Appointment Confirmed</h2>`
+  );
+}
+
+export async function sendOrderConfirmation(
+  email: string,
+  orderData: any
+): Promise<boolean> {
+  return sendEmail(
+    email,
+    "Order Confirmation",
+    "Your order has been placed successfully",
+    `<h2>Order Confirmation</h2>`
+  );
+}
 
 export async function sendLoginOTP(
   email: string,
