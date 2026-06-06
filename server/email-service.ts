@@ -1,8 +1,14 @@
 import { MailService } from '@sendgrid/mail';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
+import Brevo from '@getbrevo/brevo';
 import type { Transporter } from 'nodemailer';
+const brevo = new Brevo.TransactionalEmailsApi();
 
+brevo.setApiKey(
+  Brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY!
+);
 // Initialize email services with better error handling and debugging
 console.log('Initializing email service...');
 
@@ -111,6 +117,32 @@ console.log(`Email service status: Resend [${resendInitialized ? 'READY' : 'NOT 
  * @param html HTML email content (optional)
  * @returns Promise resolving to true if successful
  */
+async function sendWithBrevo(
+  to: string,
+  subject: string,
+  text: string,
+  html?: string
+): Promise<boolean> {
+  try {
+    await brevo.sendTransacEmail({
+      sender: {
+        email: process.env.EMAIL_FROM!,
+        name: "PillNow"
+      },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html || text,
+      textContent: text
+    });
+
+    console.log(`✅ BREVO EMAIL SENT TO ${to}`);
+    return true;
+  } catch (error) {
+    console.error("❌ BREVO ERROR", error);
+    return false;
+  }
+}
+
 export async function sendEmail(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   try {
     const timestamp = new Date().toISOString();
@@ -136,7 +168,27 @@ export async function sendEmail(to: string, subject: string, text: string, html?
         </div>${html}`;
       }
     }
-    
+    // Brevo Primary Provider
+if (process.env.BREVO_API_KEY) {
+  try {
+    console.log(`📧 [${timestamp}] BREVO: Using Brevo as primary provider`);
+
+    const result = await sendWithBrevo(
+      to,
+      subject,
+      text,
+      html
+    );
+
+    if (result) {
+      return true;
+    }
+
+    console.log(`📧 [${timestamp}] BREVO FAILED, FALLING BACK TO ZOHO`);
+  } catch (error) {
+    console.error(`📧 [${timestamp}] BREVO ERROR`, error);
+  }
+}
     // Use ZohoMail as the primary provider since it's working reliably
     if (process.env.ZOHOMAIL_USERNAME && zohomailInitialized) {
       try {
