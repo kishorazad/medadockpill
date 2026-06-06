@@ -36,7 +36,8 @@ declare global {
 }
 
 // Default to in-memory storage if not set
-const dbStorage = global.useMongoStorage ? mongoDBStorage : memStorage;
+const getStorage = () =>
+  global.useMongoStorage ? mongoDBStorage : memStorage;
 console.log(`Using ${global.useMongoStorage ? 'MongoDB' : 'in-memory'} storage for database operations`);
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -619,7 +620,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }, 0);
       
       // Create a new order
-      const newOrder = await dbStorage.createOrder({
+      const newOrder = await getStorage().createOrder({
         userId: userId,
         orderDate: new Date(),
         status: "pending",
@@ -632,7 +633,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Prepare items for email and add order items
       const enhancedItems = [];
       for (const item of cartItems) {
-        await dbStorage.createOrderItem({
+        await getStorage().createOrderItem({
           orderId: newOrder.id,
           productId: item.productId,
           quantity: item.quantity,
@@ -651,7 +652,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await dbStorage.clearCart(userId);
       
       // Send order confirmation email if user has an email
-      const user = await dbStorage.getUser(userId);
+      const user = await getStorage().getUser(userId);
       if (user && user.email) {
         // Import and use the email service
         const { sendOrderConfirmation } = await import('./email-service');
@@ -880,14 +881,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("Zod validation passed for user data");
         
         // Check if user with the username already exists
-        const existingUserByUsername = await dbStorage.getUserByUsername(validUserData.username);
+        const existingUserByUsername = await getStorage().getUserByUsername(validUserData.username);
         if (existingUserByUsername) {
           console.log(`Registration failed: Username ${validUserData.username} already exists`);
           return res.status(409).json({ message: "Username already exists" });
         }
         
         // Check if user with the email already exists
-        const existingUserByEmail = await dbStorage.getUserByEmail(validUserData.email);
+        const existingUserByEmail = await getStorage().getUserByEmail(validUserData.email);
         if (existingUserByEmail) {
           console.log(`Registration failed: Email ${validUserData.email} already exists`);
           return res.status(409).json({ message: "Email already exists" });
@@ -955,7 +956,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log('=== USER CREATION VERIFICATION ===');
           console.log(`1. Verifying user exists with ID: ${newUser.id}`);
           
-          const verifyUser = await dbStorage.getUser(newUser.id);
+          const verifyUser = await getStorage().getUser(newUser.id);
           if (verifyUser) {
             console.log(`2. User verification succeeded - found user with ID: ${verifyUser.id}`);
           } else {
@@ -1085,7 +1086,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       // Get the latest user data from database (may have been updated)
-      const user = await dbStorage.getUser(sessionUser.id);
+      const user = await getStorage().getUser(sessionUser.id);
       
       if (!user) {
         console.log(`User with ID ${sessionUser.id} not found in database`);
@@ -1234,7 +1235,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let user;
       
       // First try as username
-      user = await dbStorage.getUserByUsername(username);
+      user = await getStorage().getUserByUsername(username);
       if (user) {
         console.log(`Found user by username: ${username}, user ID: ${user.id}`);
       }
@@ -1242,7 +1243,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // If not found, try as email
       if (!user && username.includes('@')) {
         console.log(`Username not found, trying as email: ${username}`);
-        user = await dbStorage.getUserByEmail(username);
+        user = await getStorage().getUserByEmail(username);
         if (user) {
           console.log(`Found user by email: ${username}, user ID: ${user.id}`);
         }
@@ -2552,7 +2553,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Fallback to in-memory - get all users
-      const allUsers = await dbStorage.getUsers();
+      const allUsers = await getStorage().getUsers();
       // Filter to admin users only
       const users = allUsers.filter((user) => user.role === 'admin');
       // Remove passwords before sending
@@ -2660,7 +2661,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { userId, shippingAddress, totalAmount, items, paymentMethod, email, customerName } = req.body;
       
       // Create the order
-      const order = await dbStorage.createOrder({
+      const order = await getStorage().createOrder({
         userId: userId || 0, // Use 0 for guest orders if no userId provided
         shippingAddress,
         totalAmount,
@@ -2672,7 +2673,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create order items and prepare enhanced items for email
       const enhancedItems = [];
       for (const item of items) {
-        await dbStorage.createOrderItem({
+        await getStorage().createOrderItem({
           orderId: order.id,
           productId: item.productId,
           quantity: item.quantity,
@@ -2701,7 +2702,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // If userId is provided, try to get user details
       if (userId) {
-        const user = await dbStorage.getUser(userId);
+        const user = await getStorage().getUser(userId);
         if (user) {
           recipientEmail = user.email || recipientEmail;
           recipientName = user.name || user.username || recipientName;

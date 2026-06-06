@@ -95,7 +95,7 @@ class MongoDBStorage implements IStorage {
               const connectionTest = await usersCollection.findOne({ username: '__connection_test__' });
               if (!connectionTest) {
                 await usersCollection.insertOne({
-                  id: -999,
+                  id: 0,
                   username: '__connection_test__',
                   password: 'test',
                   name: 'Connection Test',
