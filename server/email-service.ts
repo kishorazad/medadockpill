@@ -16,7 +16,7 @@ let zohomailInitialized = false;
 
 // Resend webhook and domain configuration
 const RESEND_WEBHOOK_SECRET = 'whsec_vCgU7bJn+iXjrIqA1lOQ5kW3WYkOiEnx';
-const VERIFIED_DOMAIN = 'medadock.com';
+const VERIFIED_DOMAIN = '1tab.in';
 const USE_VERIFIED_DOMAIN = true; // Set to true to use actual recipient email
 const FORCE_USER_EMAIL = ''; // Set this to an email address to force all emails to that address for testing
 
@@ -117,7 +117,7 @@ setTimeout(() => {
 export async function sendEmail(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   try {
     const timestamp = new Date().toISOString();
-    const fromEmail = process.env.EMAIL_FROM || 'no-reply@medadock.com';
+    const fromEmail = process.env.EMAIL_FROM || 'info@1tab.in';
     
     // Only force emails to test address if FORCE_USER_EMAIL is set
     const originalToEmail = to;
@@ -162,7 +162,7 @@ export async function sendEmail(to: string, subject: string, text: string, html?
 //   }
 // }
     // Use ZohoMail as the primary provider since it's working reliably
-    if (process.env.ZOHOMAIL_USERNAME && zohomailInitialized) {
+if (process.env.ZOHOMAIL_USERNAME && zohoTransporter) {
       try {
         console.log(`📧 [${timestamp}] ZOHOMAIL: Using ZohoMail as primary email provider`);
         const result = await sendWithZohoMail(to, subject, text, html, fromEmail);
