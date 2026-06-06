@@ -8,7 +8,13 @@ import type { Transporter } from 'nodemailer';
 
 // Initialize email services with better error handling and debugging
 console.log('Initializing email service...');
-
+console.log("ZOHOMAIL_HOST =", process.env.ZOHOMAIL_HOST);
+console.log("ZOHOMAIL_PORT =", process.env.ZOHOMAIL_PORT);
+console.log("ZOHOMAIL_USERNAME =", process.env.ZOHOMAIL_USERNAME);
+console.log(
+  "ZOHOMAIL_PASSWORD =",
+  process.env.ZOHOMAIL_PASSWORD ? "SET" : "MISSING"
+);
 // Track email service availability
 let resendInitialized = false;
 let sendgridInitialized = false;
