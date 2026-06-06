@@ -121,6 +121,7 @@ async function setupSessionStore() {
 
   // Initialize express app
   const app = express();
+  app.set('trust proxy', 1);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
 
@@ -131,8 +132,8 @@ async function setupSessionStore() {
   const sessionConfig: session.SessionOptions = {
     name: 'pillnow.sid',
     secret: sessionSecret,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: sessionStore,
     rolling: true,
     cookie: {
@@ -140,7 +141,7 @@ async function setupSessionStore() {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       sameSite: 'lax', 
-      path: '/', 
+      
     },
   };
   app.use(session(sessionConfig));
