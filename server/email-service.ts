@@ -92,7 +92,7 @@ try {
 } catch (error) {
   console.error('❌ Error initializing Zoho Mail client:', error);
 }
-**/
+
 // Verify that at least one email service is available
 // Verify that at least one email service is available
 setTimeout(() => {
@@ -113,7 +113,6 @@ setTimeout(() => {
  * @param html HTML email content (optional)
  * @returns Promise resolving to true if successful
  */
-*/
 
 export async function sendEmail(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   try {
@@ -130,38 +129,38 @@ export async function sendEmail(to: string, subject: string, text: string, html?
     console.log(`📧 [${timestamp}] EMAIL REQUEST: to=${originalToEmail}, FORCED TO=${to}, subject="${subject}", fromEmail=${fromEmail}`);
     console.log(`📧 [${timestamp}] EMAIL SERVICES: Resend=${resendInitialized ? 'READY' : 'NOT AVAILABLE'}, SendGrid=${sendgridInitialized ? 'READY' : 'NOT AVAILABLE'}, ZohoMail=${zohomailInitialized ? 'READY' : 'NOT AVAILABLE'}`);
     
-    // Add email debugging information to subject/content only if redirecting
-    if (FORCE_USER_EMAIL && to !== originalToEmail) {
-      subject = `[TEST TO: ${originalToEmail}] ${subject}`;
-      text = `TESTING: This email was originally intended for ${originalToEmail}\n\n${text}`;
-      if (html) {
-        html = `<div style="background-color: #ffeeee; padding: 10px; margin-bottom: 15px; border: 1px solid #ffcccc; border-radius: 5px;">
-          <p style="color: #cc0000; margin: 0;">TESTING: This email was originally intended for ${originalToEmail}</p>
-        </div>${html}`;
-      }
-    }
-    // Brevo Primary Provider
+//     // Add email debugging information to subject/content only if redirecting
+//     if (FORCE_USER_EMAIL && to !== originalToEmail) {
+//       subject = `[TEST TO: ${originalToEmail}] ${subject}`;
+//       text = `TESTING: This email was originally intended for ${originalToEmail}\n\n${text}`;
+//       if (html) {
+//         html = `<div style="background-color: #ffeeee; padding: 10px; margin-bottom: 15px; border: 1px solid #ffcccc; border-radius: 5px;">
+//           <p style="color: #cc0000; margin: 0;">TESTING: This email was originally intended for ${originalToEmail}</p>
+//         </div>${html}`;
+//       }
+//     }
+//     // Brevo Primary Provider
     
-if (false) {
-  try {
-    console.log(`📧 [${timestamp}] BREVO: Using Brevo as primary provider`);
+// if (false) {
+//   try {
+//     console.log(`📧 [${timestamp}] BREVO: Using Brevo as primary provider`);
 
-    const result = await sendWithBrevo(
-      to,
-      subject,
-      text,
-      html
-    );
+//     const result = await sendWithBrevo(
+//       to,
+//       subject,
+//       text,
+//       html
+//     );
 
-    if (result) {
-      return true;
-    }
+//     if (result) {
+//       return true;
+//     }
 
-    console.log(`📧 [${timestamp}] BREVO FAILED, FALLING BACK TO ZOHO`);
-  } catch (error) {
-    console.error(`📧 [${timestamp}] BREVO ERROR`, error);
-  }
-}
+//     console.log(`📧 [${timestamp}] BREVO FAILED, FALLING BACK TO ZOHO`);
+//   } catch (error) {
+//     console.error(`📧 [${timestamp}] BREVO ERROR`, error);
+//   }
+// }
     // Use ZohoMail as the primary provider since it's working reliably
     if (process.env.ZOHOMAIL_USERNAME && zohomailInitialized) {
       try {
