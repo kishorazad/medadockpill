@@ -1,7 +1,7 @@
 import { MailService } from '@sendgrid/mail';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
-import Brevo from '@getbrevo/brevo';
+import * as Brevo from '@getbrevo/brevo';
 import type { Transporter } from 'nodemailer';
 const brevo = new Brevo.TransactionalEmailsApi();
 
