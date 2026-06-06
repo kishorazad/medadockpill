@@ -1,16 +1,11 @@
 import { MailService } from '@sendgrid/mail';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
-import * as Brevo from '@getbrevo/brevo';
+
 import type { Transporter } from 'nodemailer';
-console.log("BREVO EXPORTS:", Object.keys(Brevo));
 
-const brevo = new Brevo.TransactionalEmailsApi();
 
-brevo.setApiKey(
-  Brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY!
-);
+
 // Initialize email services with better error handling and debugging
 console.log('Initializing email service...');
 
