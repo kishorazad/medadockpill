@@ -42,6 +42,8 @@ console.log(`Using ${global.useMongoStorage ? 'MongoDB' : 'in-memory'} storage f
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup uploads directory
+  const dbStorage = getStorage();
+  
   const uploadsDir = path.join(process.cwd(), 'uploads');
   const prescriptionsDir = path.join(uploadsDir, 'prescriptions');
   if (!fs.existsSync(uploadsDir)){
