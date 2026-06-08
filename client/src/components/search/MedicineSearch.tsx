@@ -28,8 +28,7 @@ const MedicineSearch: React.FC = () => {
   const isDoctorsPage = location.startsWith('/doctors');
   
   // Add debugging for better visibility
-  console.log('Current location:', location);
-  console.log('Is on doctors page:', isDoctorsPage);
+ 
   
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);

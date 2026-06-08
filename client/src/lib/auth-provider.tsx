@@ -76,11 +76,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       
       const userData = await response.json();
-      console.log('User data fetched:', userData ? `ID: ${userData.id}, Role: ${userData.role}` : 'No user data');
+      // console.log('User data fetched:', userData ? `ID: ${userData.id}, Role: ${userData.role}` : 'No user data');
       return userData || null;
     },
     staleTime: 10000, // Lower stale time for more frequent refreshes
-    refetchOnWindowFocus: true, // Refresh when window regains focus
+    refetchOnWindowFocus: false, // Refresh when window regains focus
     retry: 1 // Retry once if failed
   });
   

@@ -238,7 +238,12 @@ function Router() {
 }
 
 function AppContent() {
-  const { fetchCart, user, tempUserId } = useStore();
+  // const { fetchCart, user, tempUserId } = useStore();
+  
+const fetchCart = useStore(state => state.fetchCart);
+const user = useStore(state => state.user);
+const tempUserId = useStore(state => state.tempUserId);
+
   const [componentsLoaded, setComponentsLoaded] = useState({
     cartSidebar: false,
     mobileNav: false,
@@ -248,7 +253,7 @@ function AppContent() {
   // Fetch cart data whenever user changes or on initial load
   useEffect(() => {
     fetchCart();
-  }, [user, tempUserId, fetchCart]);
+  }, [user?.id, tempUserId]);
   
   // Preload critical UI components after the main page loads
   useEffect(() => {

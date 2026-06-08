@@ -20,7 +20,7 @@ const PincodeDetector = () => {
     if (!pincode) {
       detectUserLocation();
     }
-  }, [pincode]);
+  }, []);
 
   const detectUserLocation = () => {
     setLocationLoading(true);

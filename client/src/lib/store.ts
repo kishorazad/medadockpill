@@ -68,10 +68,10 @@ export const useStore = create<AppState>((set, get) => ({
     const currentUserId = userId || state.user?.id || state.tempUserId;
     
     try {
-      console.log('Fetching cart for user ID:', currentUserId);
+      // console.log('Fetching cart for user ID:', currentUserId);
       const response = await fetch(`/api/cart/${currentUserId}`);
       const cartItems = await response.json();
-      console.log('Cart data fetched:', cartItems);
+      // console.log('Cart data fetched:', cartItems);
       set({ cart: cartItems });
     } catch (error) {
       console.error('Failed to fetch cart:', error);
