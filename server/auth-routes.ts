@@ -540,11 +540,31 @@ router.post('/verify-login-otp', async (req: Request, res: Response) => {
     otpStore.delete(email);
     
     // Set user session
+    // if (req.session) {
+    //    req.session.userId = user.id;
+    //    req.session.isAuthenticated = true;
+
+    // }
     if (req.session) {
-      req.session.userId = user.id;
-      req.session.isAuthenticated = true;
-    }
-    
+  (req.session as any).user = {
+    id: user.id,
+    username: user.username,
+    role: user.role,
+    email: user.email,
+    name: user.name
+  };
+
+  req.session.userId = user.id;
+  req.session.isAuthenticated = true;
+
+  await new Promise((resolve, reject) => {
+    req.session.save(err => {
+      if (err) reject(err);
+      else resolve(true);
+    });
+  });
+}
+
     // Return user data (excluding password)
     const { password: _, ...userData } = user;
     res.status(200).json(userData);

@@ -1341,6 +1341,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         name: user.name
       };
+      
       (req.session as any).loginTime = new Date().toISOString();
       (req.session as any).userAgent = req.headers['user-agent'];
       
