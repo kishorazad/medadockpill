@@ -167,7 +167,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('Generated image URL:', imageUrl);
       
       // Get user ID from the request (or default to 1 if not authenticated)
-      const userId = req.body.userId || (req.user?.id || 1);
+      // const userId = req.body.userId || (req.user?.id || 1);
+const userId = req.body.userId || req.user?.id;
+
+if (!userId) {
+  return res.status(401).json({ error: "User not authenticated" });
+}
+
       const userName = req.body.userName || req.user?.username || 'Guest User';
       const userPhone = req.body.userPhone || '';
       const userAddress = req.body.userAddress || '';
@@ -240,8 +246,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       console.log('==========================================');
     } catch (error) {
-      console.error('Prescription upload error:', error);
-      console.error('Error stack:', error.stack);
+     console.error('Prescription upload error:', error);
+
+if (error instanceof Error) {
+  console.error(error.stack);
+}
       res.status(500).json({ error: 'Failed to upload prescription' });
     }
   });
@@ -523,7 +532,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get cart items for a user with caching
   app.get("/api/cart/:userId", async (req: Request, res: Response) => {
     const userId = parseInt(req.params.userId);
-    
+    if (isNaN(userId) || userId <= 0) {
+  return res.status(400).json({
+    message: "Invalid user ID"
+  });
+}
     // Generate cache key for this user's cart
     const cacheKey = `cart:user=${userId}`;
     
