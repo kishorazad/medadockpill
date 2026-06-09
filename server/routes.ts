@@ -2602,27 +2602,32 @@ if (error instanceof Error) {
     }
   });
   
-  // Get order by ID
-  app.get("/api/orders/:id", async (req: Request, res: Response) => {
-    try {
-      const id = parseInt(req.params.id);
-      const order = await dbStorage.getOrder();
-      const order = orders.find((o: any) => o.id === id);
-      if (!order) {
-        return res.status(404).json({ 
-          message: "Order not found" });
-      }
-      
-      res.json(order);
-    } catch (error: any) {
-  console.error('Error fetching order:', error);
+ // Get order by ID
+app.get("/api/orders/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
 
-  res.status(500).json({
-    message: "Failed to fetch order",
-    error: error?.message || String(error)
-  });
-}
- }); 
+    const orders = await dbStorage.getOrders();
+    const order = orders.find((o: any) => o.id === id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found"
+      });
+    }
+
+    res.json(order);
+
+  } catch (error: any) {
+    console.error("Error fetching order:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch order",
+      error: error?.message || String(error)
+    });
+  }
+});
+  
   // Get orders by user ID
   app.get("/api/orders/user/:userId", async (req: Request, res: Response) => {
     try {
