@@ -375,14 +375,8 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     
-    console.log('Password verification successful');
-    
-    // Set user session
-    // if (req.session) {
-    //   req.session.userId = user.id;
-    //   req.session.isAuthenticated = true;
-    //   console.log(`Session established for user ID: ${user.id}`);
-    // }
+  
+   
     if (req.session) {
   (req.session as any).user = {
     id: user.id,
@@ -554,20 +548,36 @@ router.post('/verify-login-otp', async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
     // Clear the OTP
-    otpStore.delete(email);
-    
-    // Set user session
-    // if (req.session) {
-    //   // req.session.userId = user.id;
-    //    req.session.isAuthenticated = true;
+otpStore.delete(email);
 
-    // }
-    
-    // Return user data (excluding password)
-    const { password: _, ...userData } = user;
-    res.status(200).json(userData);
+// Set user session
+if (req.session) {
+  (req.session as any).user = {
+    id: user.id,
+    username: user.username,
+    role: user.role,
+    email: user.email,
+    name: user.name
+  };
+
+  req.session.userId = user.id;
+  req.session.isAuthenticated = true;
+
+  await new Promise<void>((resolve, reject) => {
+    req.session.save((err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
+// Return user data
+const { password: _, ...userData } = user;
+res.status(200).json(userData);
+   
+
+
   } catch (error) {
     console.error('Verify login OTP error:', error);
     res.status(500).json({ message: 'Authentication failed' });

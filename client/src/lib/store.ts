@@ -72,7 +72,10 @@ export const useStore = create<AppState>((set, get) => ({
       const response = await fetch(`/api/cart/${currentUserId}`);
       const cartItems = await response.json();
       // console.log('Cart data fetched:', cartItems);
-      set({ cart: cartItems });
+      // set({ cart: cartItems });
+      set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
     } catch (error) {
       console.error('Failed to fetch cart:', error);
     }
@@ -92,7 +95,10 @@ export const useStore = create<AppState>((set, get) => ({
       // Refetch the cart
       const response = await fetch(`/api/cart/${userId}`);
       const cartItems = await response.json();
-      set({ cart: cartItems });
+      // set({ cart: cartItems });
+      set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
     } catch (error) {
       console.error('Failed to add to cart:', error);
     }
@@ -108,7 +114,11 @@ export const useStore = create<AppState>((set, get) => ({
       // Refetch the cart
       const response = await fetch(`/api/cart/${userId}`);
       const cartItems = await response.json();
-      set({ cart: cartItems });
+      // 
+      set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
+
     } catch (error) {
       console.error('Failed to update cart item:', error);
     }
@@ -124,7 +134,11 @@ export const useStore = create<AppState>((set, get) => ({
       // Refetch the cart
       const response = await fetch(`/api/cart/${userId}`);
       const cartItems = await response.json();
-      set({ cart: cartItems });
+      // set({ cart: cartItems });
+set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
+
     } catch (error) {
       console.error('Failed to remove from cart:', error);
     }
@@ -149,7 +163,9 @@ export const useStore = create<AppState>((set, get) => ({
     
     // Update user state immediately - this is important for UI responsiveness
     set({ user });
-    
+    console.log("FULL USER OBJECT RECEIVED:", user);
+
+
     // If a user just logged in, handle cart operations in background
     if (user && !prevUser) {
       // Use setTimeout to make it non-blocking so UI doesn't freeze
@@ -168,7 +184,11 @@ export const useStore = create<AppState>((set, get) => ({
           const response = await fetch(`/api/cart/${user.id}`);
           const cartItems = await response.json();
           console.log("Cart items after login and transfer:", cartItems);
-          set({ cart: cartItems });
+          // set({ cart: cartItems });
+set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
+
         } catch (error) {
           console.error('Failed to transfer or fetch cart items after login:', error);
           
@@ -176,7 +196,11 @@ export const useStore = create<AppState>((set, get) => ({
           try {
             const response = await fetch(`/api/cart/${user.id}`);
             const cartItems = await response.json();
-            set({ cart: cartItems });
+            // set({ cart: cartItems });
+set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
+
           } catch (innerError) {
             console.error('Failed to fetch cart as fallback:', innerError);
           }
@@ -196,7 +220,11 @@ export const useStore = create<AppState>((set, get) => ({
           console.log("Fetching temp cart items for new ID:", newTempId);
           const response = await fetch(`/api/cart/${newTempId}`);
           const cartItems = await response.json();
-          set({ cart: cartItems });
+          // set({ cart: cartItems });
+set({
+  cart: Array.isArray(cartItems) ? cartItems : []
+});
+
         } catch (error) {
           console.error('Failed to fetch temp cart items after logout:', error);
         }
