@@ -947,37 +947,44 @@
 
     // ---------- Orders ----------
     // Get all orders for analytics and sales dashboard
-    async getAllOrders(): Promise<Order[]> {
-      try {
-        console.log('MongoDB: Fetching all orders for sales dashboard analysis');
-        if (!this.isConnected(this.collections.orders)) {
-          console.log('MongoDB: Not connected to orders collection');
-          return [];
-        }
-        
-        const collection = mongoDBService.getCollection(this.collections.orders);
-        const orders = await collection.find({}).toArray();
-        
-        // Get all order items
-        const orderItems = await this.getAllOrderItems();
-        
-        // Map order items to respective orders
-        const ordersWithItems = orders.map(order => {
-          const items = orderItems.filter(item => item.orderId === order.id);
-          return {
-            ...order,
-            items
-          };
-        });
-        
-        console.log(`MongoDB: Found ${ordersWithItems.length} orders with items data`);
-        return ordersWithItems;
-      } catch (error) {
-        console.error('MongoDB: Error fetching all orders:', error);
-        return [];
-      }
-    }
     
+    // ---------- Order Management ----------
+
+async getOrders(): Promise<Order[]> {
+  if (!this.isConnected(this.collections.orders)) {
+    return [];
+  }
+
+  const collection = mongoDBService.getCollection(this.collections.orders);
+  if (!collection) return [];
+
+  const orders = await collection.find({}).toArray();
+  return orders as Order[];
+}
+
+async getOrderById(id: number): Promise<Order | undefined> {
+  if (!this.isConnected(this.collections.orders)) {
+    return undefined;
+  }
+
+  const collection = mongoDBService.getCollection(this.collections.orders);
+  if (!collection) return undefined;
+
+  const order = await collection.findOne({ id });
+  return order as Order | undefined;
+}
+
+async getOrdersByUser(userId: number): Promise<Order[]> {
+  if (!this.isConnected(this.collections.orders)) {
+    return [];
+  }
+
+  const collection = mongoDBService.getCollection(this.collections.orders);
+  if (!collection) return [];
+
+  const orders = await collection.find({ userId }).toArray();
+  return orders as Order[];
+}
     // Get all order items for analytics purposes
     async getAllOrderItems(): Promise<any[]> {
       try {

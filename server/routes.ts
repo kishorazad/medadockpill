@@ -43,7 +43,11 @@ console.log(`Using ${global.useMongoStorage ? 'MongoDB' : 'in-memory'} storage f
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup uploads directory
   const dbStorage = getStorage();
-  
+    console.log("STORAGE TYPE:", dbStorage.constructor.name);
+  console.log("HAS getOrderById:", typeof (dbStorage as any).getOrderById);
+  console.log("HAS getOrdersByUser:", typeof (dbStorage as any).getOrdersByUser);
+  console.log("HAS getOrders:", typeof (dbStorage as any).getOrders);
+
   const uploadsDir = path.join(process.cwd(), 'uploads');
   const prescriptionsDir = path.join(uploadsDir, 'prescriptions');
   if (!fs.existsSync(uploadsDir)){
@@ -2602,10 +2606,11 @@ if (error instanceof Error) {
   app.get("/api/orders/:id", async (req: Request, res: Response) => {
     try {
       const id = parseInt(req.params.id);
-      const order = await dbStorage.getOrderById(id);
-      
+      const order = await dbStorage.getOrder();
+      const order = orders.find((o: any) => o.id === id);
       if (!order) {
-        return res.status(404).json({ message: "Order not found" });
+        return res.status(404).json({ 
+          message: "Order not found" });
       }
       
       res.json(order);
@@ -2617,7 +2622,7 @@ if (error instanceof Error) {
     error: error?.message || String(error)
   });
 }
-  
+ }); 
   // Get orders by user ID
   app.get("/api/orders/user/:userId", async (req: Request, res: Response) => {
     try {
