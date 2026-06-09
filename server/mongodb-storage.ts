@@ -237,8 +237,19 @@ class MongoDBStorage implements IStorage {
 
       // Generate a numeric ID for compatibility with in-memory storage
       console.log('Generating unique ID for new user');
-      const lastUser = await collection.find().sort({ id: -1 }).limit(1).toArray();
-      const id = lastUser.length > 0 ? lastUser[0].id + 1 : 1;
+      // const lastUser = await collection.find().sort({ id: -1 }).limit(1).toArray();
+      // const id = lastUser.length > 0 ? lastUser[0].id + 1 : 1;
+   const lastUser = await collection
+  .find({ id: { $gt: 0 } })
+  .sort({ id: -1 })
+  .limit(1)
+  .toArray();
+
+const id =
+  lastUser.length > 0
+    ? lastUser[0].id + 1
+    : 1;
+    
       console.log(`Generated ID: ${id} for user ${user.username}`);
       
       // Make sure role is set, default to 'customer' if not specified
