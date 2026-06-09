@@ -2632,11 +2632,24 @@ app.get("/api/orders/:id", async (req: Request, res: Response) => {
   app.get("/api/orders/user/:userId", async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
-      let orders = await dbStorage.getOrdersByUser(userId);
+      const orders = await dbStorage.getOrdersByUser(userId);
+
+    console.log("Orders found:", orders);
+ res.json(orders);
+
+ } catch (error: any) {
+    console.error("Error fetching user orders:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch user orders",
+      error: error?.message || String(error)
+    });
+  }
+});
       
       // Enhance orders with items
-      const enhancedOrders = await Promise.all(orders.map(async (order) => {
-        const orderItems = await dbStorage.getOrderItems(order.id);
+      // const enhancedOrders = await Promise.all(orders.map(async (order) => {
+      //   const orderItems = await dbStorage.getOrderItems(order.id);
         
         // For each order item, get product details
         const enhancedItems = await Promise.all(orderItems.map(async (item) => {
