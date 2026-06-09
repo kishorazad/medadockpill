@@ -2609,11 +2609,14 @@ if (error instanceof Error) {
       }
       
       res.json(order);
-    } catch (error) {
-      console.error('Error fetching order:', error);
-      res.status(500).json({ message: "Failed to fetch order" });
-    }
+    } catch (error: any) {
+  console.error('Error fetching order:', error);
+
+  res.status(500).json({
+    message: "Failed to fetch order",
+    error: error?.message || String(error)
   });
+}
   
   // Get orders by user ID
   app.get("/api/orders/user/:userId", async (req: Request, res: Response) => {
