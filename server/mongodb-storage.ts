@@ -1280,7 +1280,7 @@ async getOrdersByUser(userId: number): Promise<Order[]> {
     // SEO related methods
     async getSeoSettings(): Promise<SeoSettings | undefined> {
       try {
-        const db = client.db("pillnow");
+        const db = mongoDBService.getDb();
         const settingsCollection = db.collection("seo_settings");
         const settings = await settingsCollection.findOne({ _id: "global" });
         
