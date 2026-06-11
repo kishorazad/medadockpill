@@ -1105,8 +1105,20 @@ if (error instanceof Error) {
       });
       
       // Get the latest user data from database (may have been updated)
-      const user = await getStorage().getUser(sessionUser.id);
-      
+const storage = getStorage();
+console.log(
+  "Storage implementation:",
+  storage.constructor?.name
+);
+
+
+     const user = await storage.getUser(sessionUser.id);
+     
+      console.log("DB USER RESULT:", user);
+console.log("SESSION USER:", sessionUser);
+console.log("global.useMongoStorage:", global.useMongoStorage);
+
+
       if (!user) {
         console.log(`User with ID ${sessionUser.id} not found in database`);
         // Session contains invalid user, clear it
