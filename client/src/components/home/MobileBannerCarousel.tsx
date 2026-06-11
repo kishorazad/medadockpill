@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import { ChevronLeft, ChevronRight, Upload, Stethoscope, HeartPulse } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLocation } from "wouter";
-const [, navigate] = useLocation();
+
 interface Banner {
   id: number;
   imageUrl: string;
@@ -16,6 +16,7 @@ const MobileBannerCarousel: React.FC = () => {
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartX = useRef<number>(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+   const [, navigate] = useLocation();
   
   // Custom PillNow banner data
   const banners: Banner[] = [
