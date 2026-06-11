@@ -8,6 +8,7 @@ import { LanguageProvider } from "./components/LanguageSwitcher";
 import { AuthProvider, useAuth } from "./lib/auth-provider";
 import { Loader2 } from "lucide-react";
 
+
 // Critical Layout Components - these are needed for initial render
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -181,6 +182,7 @@ function Router() {
       {/* Critical routes loaded eagerly */}
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
+
       
       {/* Lazy-loaded routes */}
       <SuspenseRoute path="/products" component={ProductListing} />
