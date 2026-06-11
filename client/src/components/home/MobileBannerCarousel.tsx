@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'wouter';
 import { ChevronLeft, ChevronRight, Upload, Stethoscope, HeartPulse } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
+import { useLocation } from "wouter";
+const [, navigate] = useLocation();
 interface Banner {
   id: number;
   imageUrl: string;
@@ -147,7 +148,9 @@ const MobileBannerCarousel: React.FC = () => {
       {/* Healthcare Services */}
       <div className="grid grid-cols-2 gap-3">
         {/* Upload Prescription */}
-        <div className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg p-3 flex flex-col items-center">
+        <div
+  onClick={() => navigate("/prescription-upload")}
+         className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg p-3 flex flex-col items-center">
           <Upload className="text-orange-500 h-6 w-6 mb-1" />
           <span className="text-sm font-medium text-center">Upload Prescription</span>
           <span className="text-xs text-gray-600 mt-1 text-center">Quick order via prescription</span>
