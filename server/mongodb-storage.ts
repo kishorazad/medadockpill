@@ -1299,7 +1299,8 @@ async getOrdersByUser(userId: number): Promise<Order[]> {
 
     async saveSeoSettings(settings: SeoSettings): Promise<SeoSettings> {
       try {
-        const db = client.db("pillnow");
+       const db = mongoDBService.getDb();
+        
         const settingsCollection = db.collection("seo_settings");
         
         // Use upsert to create or update document with _id: "global"
@@ -1318,7 +1319,7 @@ async getOrdersByUser(userId: number): Promise<Order[]> {
 
     async getSeoAnalytics(): Promise<SeoAnalytics | undefined> {
       try {
-        const db = client.db("pillnow");
+        const db = mongoDBService.getDb();
         const analyticsCollection = db.collection("seo_analytics");
         const analytics = await analyticsCollection.findOne({ _id: "latest" });
         
@@ -1337,7 +1338,7 @@ async getOrdersByUser(userId: number): Promise<Order[]> {
 
     async saveSeoAnalytics(analytics: SeoAnalytics): Promise<SeoAnalytics> {
       try {
-        const db = client.db("pillnow");
+        const db = mongoDBService.getDb();
         const analyticsCollection = db.collection("seo_analytics");
         
         // Save current analytics as historical entry
@@ -1766,6 +1767,43 @@ async getOrdersByUser(userId: number): Promise<Order[]> {
         throw error;
       }
     }
+  
+
+async getArticles() {
+  const collection = mongoDBService.getCollection("articles");
+  return collection ? await collection.find({}).toArray() : [];
+}
+
+async getTestimonials() {
+  const collection = mongoDBService.getCollection("testimonials");
+  return collection ? await collection.find({}).toArray() : [];
+}
+
+async getLabTests() {
+  const collection = mongoDBService.getCollection("labTests");
+  return collection ? await collection.find({}).toArray() : [];
+}
+
+async getHealthTips() {
+  const collection = mongoDBService.getCollection("healthTips");
+  return collection ? await collection.find({}).toArray() : [];
+}
+
+async getRandomHealthTip() {
+  const tips = await this.getHealthTips();
+
+  return tips.length > 0
+    ? tips[Math.floor(Math.random() * tips.length)]
+    : null;
+}
+
+async getHealthTipById(id: number) {
+  const collection = mongoDBService.getCollection("healthTips");
+
+  return collection
+    ? await collection.findOne({ id })
+    : null;
+}
   }
 
   // Create and export the MongoDB storage instance
