@@ -156,8 +156,8 @@ const UserManagement = () => {
   // Add user mutation
   const addUserMutation = useMutation({
     mutationFn: async (userData) => {
-      const response = await apiRequest('POST', '/api/admin/mongodb-users', userData);
-      return response.json();
+      return await apiRequest('POST', '/api/admin/mongodb-users', userData);
+     
     },
     onSuccess: () => {
       toast({
@@ -428,10 +428,26 @@ const UserManagement = () => {
                               <Info className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => openEditDialog(user)}>
-                              <Pencil className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
+                            <DropdownMenuItem
+  onSelect={() => {
+    setEditUser({
+      _id: user._id,
+      username: user.username || "",
+      name: user.name || "",
+      email: user.email || "",
+      role: user.role || "customer",
+      phone: user.phone || "",
+      address: user.address || "",
+      pincode: user.pincode || "",
+      status: user.status || "active",
+    });
+
+    setShowEditDialog(true);
+  }}
+>
+  <Pencil className="mr-2 h-4 w-4" />
+  Edit
+</DropdownMenuItem>
                             <DropdownMenuItem 
                               onClick={() => openDeleteDialog(user)}
                               className="text-red-600"
