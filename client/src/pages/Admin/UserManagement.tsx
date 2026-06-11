@@ -148,91 +148,109 @@ const UserManagement = () => {
       if (roleFilter) queryParams.append('role', roleFilter);
       
       // Directly query MongoDB collections
-      const response = await apiRequest('GET', `/api/admin/mongodb-users?${queryParams.toString()}`);
-      return response.json();
+    return await apiRequest('GET', `/api/admin/mongodb-users?${queryParams.toString()}`);
+      
     },
   });
 
   // Add user mutation
   const addUserMutation = useMutation({
-    mutationFn: async (userData) => {
-      const response = await apiRequest('POST', '/api/admin/mongodb-users', userData);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "User created successfully",
-        description: "The new user has been added to MongoDB.",
-      });
-      setShowAddDialog(false);
-      setNewUser({
-        username: "",
-        name: "",
-        email: "",
-        password: "",
-        role: "customer",
-        phone: "",
-        address: "",
-        pincode: "",
-        status: "active",
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/mongodb-users'] });
-    },
-    onError: (error) => {
-      toast({
-        title: "Failed to create user",
-        description: error.message || "An error occurred. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  mutationFn: async (userData) => {
+    return await apiRequest(
+      'POST',
+      '/api/admin/mongodb-users',
+      userData
+    );
+  },
+
+  onSuccess: () => {
+    toast({
+      title: "User created successfully",
+      description: "The new user has been added to MongoDB.",
+    });
+
+    setShowAddDialog(false);
+
+    setNewUser({
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      role: "customer",
+      phone: "",
+      address: "",
+      pincode: "",
+      status: "active",
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: ['/api/admin/mongodb-users']
+    });
+  },
+
+  onError: (error: any) => {
+    toast({
+      title: "Failed to create user",
+      description: error?.message || "An error occurred",
+      variant: "destructive",
+    });
+  },
+});
 
   // Update user mutation
-  const updateUserMutation = useMutation({
-    mutationFn: async (userData) => {
-      const { _id, ...rest } = userData;
-      const response = await apiRequest('PUT', `/api/admin/mongodb-users/${_id}`, rest);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "User updated successfully",
-        description: "The user information has been updated in MongoDB.",
-      });
-      setShowEditDialog(false);
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/mongodb-users'] });
-    },
-    onError: (error) => {
-      toast({
-        title: "Failed to update user",
-        description: error.message || "An error occurred. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+ const updateUserMutation = useMutation({
+  mutationFn: async (userData: any) => {
+    const { _id, ...rest } = userData;
+
+    return await apiRequest(
+      'PUT',
+      `/api/admin/mongodb-users/${_id}`,
+      rest
+    );
+  },
+
+  onSuccess: () => {
+    toast({
+      title: "User updated",
+      description: "User information updated successfully.",
+    });
+
+    setShowEditDialog(false);
+
+    queryClient.invalidateQueries({
+      queryKey: ['/api/admin/mongodb-users']
+    });
+  },
+
+  onError: (error: any) => {
+    toast({
+      title: "Update failed",
+      description: error?.message || "An error occurred",
+      variant: "destructive",
+    });
+  },
+});
 
   // Delete user mutation
   const deleteUserMutation = useMutation({
-    mutationFn: async (userId) => {
-      const response = await apiRequest('DELETE', `/api/admin/mongodb-users/${userId}`);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "User deleted successfully",
-        description: "The user has been removed from MongoDB.",
-      });
-      setShowDeleteDialog(false);
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/mongodb-users'] });
-    },
-    onError: (error) => {
-      toast({
-        title: "Failed to delete user",
-        description: error.message || "An error occurred. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  mutationFn: async (userId: string) => {
+    return await apiRequest(
+      'DELETE',
+      `/api/admin/mongodb-users/${userId}`
+    );
+  },
+
+  onSuccess: () => {
+    toast({
+      title: "User deleted",
+      description: "User removed successfully.",
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: ['/api/admin/mongodb-users']
+    });
+  },
+});
 
   // Handlers
   const handleAddUser = (e) => {
@@ -251,6 +269,7 @@ const UserManagement = () => {
   };
 
   const openEditDialog = (user) => {
+    console.log("EDIT CLICKED", user);
     setEditUser({
       _id: user._id,
       username: user.username || "",
