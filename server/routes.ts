@@ -2647,34 +2647,34 @@ app.get("/api/orders/:id", async (req: Request, res: Response) => {
   }
 });
       
-      // Enhance orders with items
-       const enhancedOrders = await Promise.all(orders.map(async (order) => {
-       const orderItems = await dbStorage.getOrderItems(order.id);
-        
-        // For each order item, get product details
-        const enhancedItems = await Promise.all(orderItems.map(async (item) => {
-          const product = await dbStorage.getProductById(item.productId);
-          return {
-            ...item,
-            product
-          };
-        }));
-        
-        // Return a new object with items added
-        return {
-          ...order,
-          items: enhancedItems
-        };
-      }));
       
-      res.json(enhancedOrders);
-    } catch (error) {
-      console.error('Error fetching user orders:', error);
-      res.status(500).json({ message: "Failed to fetch user orders" });
-    }
-  });
+  //      const enhancedOrders = await Promise.all(orders.map(async (order) => {
+  //      const orderItems = await dbStorage.getOrderItems(order.id);
+        
+  //       // For each order item, get product details
+  //       const enhancedItems = await Promise.all(orderItems.map(async (item) => {
+  //         const product = await dbStorage.getProductById(item.productId);
+  //         return {
+  //           ...item,
+  //           product
+  //         };
+  //       }));
+        
+  //       // Return a new object with items added
+  //       return {
+  //         ...order,
+  //         items: enhancedItems
+  //       };
+  //     }));
+      
+  //     res.json(enhancedOrders);
+  //   } catch (error) {
+  //     console.error('Error fetching user orders:', error);
+  //     res.status(500).json({ message: "Failed to fetch user orders" });
+  //   }
+  // });
   
-  // Get order items for a specific order
+ 
   app.get("/api/orders/:id/items", async (req: Request, res: Response) => {
     try {
       const id = parseInt(req.params.id);
