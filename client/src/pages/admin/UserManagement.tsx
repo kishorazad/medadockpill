@@ -429,7 +429,12 @@ const UserManagement = () => {
                               View Details
                             </DropdownMenuItem>
                             <DropdownMenuItem
-  onSelect={() => {
+    onSelect={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    console.log("EDIT CLICKED");
+
     setEditUser({
       _id: user._id,
       username: user.username || "",
