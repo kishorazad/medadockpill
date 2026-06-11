@@ -130,116 +130,154 @@ const UserManagement = () => {
   
   // Sample user data
   const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      name: 'Dr. Anil Kumar',
-      username: 'dranilk',
-      email: 'anil.kumar@example.com',
-      phone: '+91 98765 43210',
-      role: 'doctor',
-      status: 'active',
-      joinDate: '2023-01-15',
-      lastActive: '2025-04-09',
-      avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Meera Patel',
-      username: 'meerapatel',
-      email: 'meera.patel@example.com',
-      phone: '+91 87654 32109',
-      role: 'pharmacy',
-      status: 'active',
-      joinDate: '2023-02-20',
-      lastActive: '2025-04-08',
-      avatar: 'https://randomuser.me/api/portraits/women/2.jpg'
-    },
-    {
-      id: 3,
-      name: 'Raj Singh',
-      username: 'rajsingh',
-      email: 'raj.singh@example.com',
-      phone: '+91 76543 21098',
-      role: 'laboratory',
-      status: 'active',
-      joinDate: '2023-03-10',
-      lastActive: '2025-04-07',
-      avatar: 'https://randomuser.me/api/portraits/men/3.jpg'
-    },
-    {
-      id: 4,
-      name: 'Priya Sharma',
-      username: 'priyasharma',
-      email: 'priya.sharma@example.com',
-      phone: '+91 65432 10987',
-      role: 'admin',
-      status: 'active',
-      joinDate: '2022-12-05',
-      lastActive: '2025-04-10',
-      avatar: 'https://randomuser.me/api/portraits/women/4.jpg'
-    },
-    {
-      id: 5,
-      name: 'Vikram Mehta',
-      username: 'vikrammehta',
-      email: 'vikram.mehta@example.com',
-      phone: '+91 54321 09876',
-      role: 'user',
-      status: 'active',
-      joinDate: '2023-04-22',
-      lastActive: '2025-04-05',
-      avatar: 'https://randomuser.me/api/portraits/men/5.jpg'
-    },
-    {
-      id: 6,
-      name: 'Deepa Verma',
-      username: 'deepaverma',
-      email: 'deepa.verma@example.com',
-      phone: '+91 43210 98765',
-      role: 'doctor',
-      status: 'pending',
-      joinDate: '2025-04-08',
-      lastActive: '2025-04-08',
-      avatar: 'https://randomuser.me/api/portraits/women/6.jpg'
-    },
-    {
-      id: 7,
-      name: 'Rahul Gupta',
-      username: 'rahulgupta',
-      email: 'rahul.gupta@example.com',
-      phone: '+91 32109 87654',
-      role: 'pharmacy',
-      status: 'suspended',
-      joinDate: '2023-06-14',
-      lastActive: '2025-03-20',
-      avatar: 'https://randomuser.me/api/portraits/men/7.jpg'
-    },
-    {
-      id: 8,
-      name: 'Anand Kumar',
-      username: 'chemist1',
-      email: 'anand.kumar@example.com',
-      phone: '+91 98765 12345',
-      role: 'chemist',
-      status: 'active',
-      joinDate: '2023-05-10',
-      lastActive: '2025-04-12',
-      avatar: 'https://randomuser.me/api/portraits/men/8.jpg'
-    },
-    {
-      id: 9,
-      name: 'Apollo Hospital',
-      username: 'hospital1',
-      email: 'apollo.hospital@example.com',
-      phone: '+91 76543 09876',
-      role: 'hospital',
-      status: 'active',
-      joinDate: '2023-01-12',
-      lastActive: '2025-04-11',
-      avatar: 'https://randomuser.me/api/portraits/men/9.jpg'
-    }
+    // {
+    //   id: 1,
+    //   name: 'Dr. Anil Kumar',
+    //   username: 'dranilk',
+    //   email: 'anil.kumar@example.com',
+    //   phone: '+91 98765 43210',
+    //   role: 'doctor',
+    //   status: 'active',
+    //   joinDate: '2023-01-15',
+    //   lastActive: '2025-04-09',
+    //   avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
+    // },
+    // {
+    //   id: 2,
+    //   name: 'Meera Patel',
+    //   username: 'meerapatel',
+    //   email: 'meera.patel@example.com',
+    //   phone: '+91 87654 32109',
+    //   role: 'pharmacy',
+    //   status: 'active',
+    //   joinDate: '2023-02-20',
+    //   lastActive: '2025-04-08',
+    //   avatar: 'https://randomuser.me/api/portraits/women/2.jpg'
+    // },
+    // {
+    //   id: 3,
+    //   name: 'Raj Singh',
+    //   username: 'rajsingh',
+    //   email: 'raj.singh@example.com',
+    //   phone: '+91 76543 21098',
+    //   role: 'laboratory',
+    //   status: 'active',
+    //   joinDate: '2023-03-10',
+    //   lastActive: '2025-04-07',
+    //   avatar: 'https://randomuser.me/api/portraits/men/3.jpg'
+    // },
+    // {
+    //   id: 4,
+    //   name: 'Priya Sharma',
+    //   username: 'priyasharma',
+    //   email: 'priya.sharma@example.com',
+    //   phone: '+91 65432 10987',
+    //   role: 'admin',
+    //   status: 'active',
+    //   joinDate: '2022-12-05',
+    //   lastActive: '2025-04-10',
+    //   avatar: 'https://randomuser.me/api/portraits/women/4.jpg'
+    // },
+    // {
+    //   id: 5,
+    //   name: 'Vikram Mehta',
+    //   username: 'vikrammehta',
+    //   email: 'vikram.mehta@example.com',
+    //   phone: '+91 54321 09876',
+    //   role: 'user',
+    //   status: 'active',
+    //   joinDate: '2023-04-22',
+    //   lastActive: '2025-04-05',
+    //   avatar: 'https://randomuser.me/api/portraits/men/5.jpg'
+    // },
+    // {
+    //   id: 6,
+    //   name: 'Deepa Verma',
+    //   username: 'deepaverma',
+    //   email: 'deepa.verma@example.com',
+    //   phone: '+91 43210 98765',
+    //   role: 'doctor',
+    //   status: 'pending',
+    //   joinDate: '2025-04-08',
+    //   lastActive: '2025-04-08',
+    //   avatar: 'https://randomuser.me/api/portraits/women/6.jpg'
+    // },
+    // {
+    //   id: 7,
+    //   name: 'Rahul Gupta',
+    //   username: 'rahulgupta',
+    //   email: 'rahul.gupta@example.com',
+    //   phone: '+91 32109 87654',
+    //   role: 'pharmacy',
+    //   status: 'suspended',
+    //   joinDate: '2023-06-14',
+    //   lastActive: '2025-03-20',
+    //   avatar: 'https://randomuser.me/api/portraits/men/7.jpg'
+    // },
+    // {
+    //   id: 8,
+    //   name: 'Anand Kumar',
+    //   username: 'chemist1',
+    //   email: 'anand.kumar@example.com',
+    //   phone: '+91 98765 12345',
+    //   role: 'chemist',
+    //   status: 'active',
+    //   joinDate: '2023-05-10',
+    //   lastActive: '2025-04-12',
+    //   avatar: 'https://randomuser.me/api/portraits/men/8.jpg'
+    // },
+    // {
+    //   id: 9,
+    //   name: 'Apollo Hospital',
+    //   username: 'hospital1',
+    //   email: 'apollo.hospital@example.com',
+    //   phone: '+91 76543 09876',
+    //   role: 'hospital',
+    //   status: 'active',
+    //   joinDate: '2023-01-12',
+    //   lastActive: '2025-04-11',
+    //   avatar: 'https://randomuser.me/api/portraits/men/9.jpg'
+    // }
   ]);
-  
+  useEffect(() => {
+
+  // // fetch("/api/admin/users")
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     console.log("MongoDB Users:", data);
+const loadUsers = async () => {
+    try {
+      const res = await fetch("/api/admin/users");
+      const data = await res.json();
+
+      console.log("MongoDB Users:", data);
+
+      const mongoUsers = (data.users || []).map((user: any) => ({
+        id: user.id,
+        name: user.name || user.username,
+        username: user.username,
+        email: user.email,
+        phone: user.phone || "",
+        role: user.role || "customer",
+        status: user.status || "active",
+        joinDate: user.createdAt
+          ? new Date(user.createdAt).toISOString().split("T")[0]
+          : "",
+        lastActive: user.updatedAt
+          ? new Date(user.updatedAt).toISOString().split("T")[0]
+          : "",
+        avatar: ""
+      }));
+
+      setUsers(mongoUsers);
+    }
+    catch(err) {
+      console.error("Error loading users:", err);
+    }
+};
+loadUsers();
+}, []);
+
   // Get filtered users based on tab, search and filters
   const getFilteredUsers = () => {
     return users.filter(user => {
@@ -298,49 +336,97 @@ const UserManagement = () => {
   
   // Create user mutation
   const createUserMutation = useMutation({
-    mutationFn: async (userData: any) => {
-      const res = await apiRequest("POST", "/api/admin/users", userData);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to create user");
-      }
-      return await res.json();
-    },
-    onSuccess: () => {
-      // Reset form and close dialog
-      setNewUser({
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        phone: '',
-        role: 'customer',
-        active: true
-      });
-      setFormError(null);
-      setIsAddUserDialogOpen(false);
-      
-      // Show success message
-      toast({
-        title: "User created successfully",
-        description: "The new user has been added to the system",
-        variant: "default",
-      });
-      
-      // Invalidate queries to refresh user list
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/user-stats'] });
-    },
-    onError: (error: Error) => {
-      setFormError(error.message);
-      toast({
-        title: "Error creating user",
-        description: error.message,
-        variant: "destructive",
-      });
+  mutationFn: async (userData: any) => {
+    const res = await apiRequest(
+      "POST",
+      "/api/admin/users",
+      userData
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(
+        errorData.message || "Failed to create user"
+      );
     }
-  });
+
+    return await res.json();
+  },
+
+  onSuccess: async () => {
+    setNewUser({
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      phone: "",
+      role: "customer",
+      active: true
+    });
+
+    setFormError(null);
+    setIsAddUserDialogOpen(false);
+
+    toast({
+      title: "User created successfully",
+      description: "The new user has been added to the system",
+      variant: "default",
+    });
+
+    try {
+      const res = await fetch("/api/admin/users");
+      const data = await res.json();
+
+      const mongoUsers = (data.users || []).map((user: any) => ({
+        id: user.id,
+        name: user.name || user.username,
+        username: user.username || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        role: user.role || "customer",
+        status: user.status || "active",
+        joinDate: user.createdAt
+          ? new Date(user.createdAt)
+              .toISOString()
+              .split("T")[0]
+          : "",
+        lastActive: user.updatedAt
+          ? new Date(user.updatedAt)
+              .toISOString()
+              .split("T")[0]
+          : "",
+        avatar: ""
+      }));
+
+      setUsers(mongoUsers);
+
+      queryClient.invalidateQueries({
+        queryKey: ["/api/admin/users"]
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["/api/admin/user-stats"]
+      });
+
+    } catch (error) {
+      console.error(
+        "Failed to refresh users:",
+        error
+      );
+    }
+  },
+
+  onError: (error: Error) => {
+    setFormError(error.message);
+
+    toast({
+      title: "Error creating user",
+      description: error.message,
+      variant: "destructive",
+    });
+  }
+});
   
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
