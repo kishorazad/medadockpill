@@ -172,13 +172,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get user ID from the request (or default to 1 if not authenticated)
       // const userId = req.body.userId || (req.user?.id || 1);
-const userId = req.body.userId || req.user?.id;
+const sessionUser = (req.session as any)?.user;
+
+const userId =
+  req.body.userId ||
+  sessionUser?.id;
 
 if (!userId) {
-  return res.status(401).json({ error: "User not authenticated" });
+  return res.status(401).json({
+    error: "User not authenticated"
+  });
 }
+   const userName =
+  req.body.userName ||
+  sessionUser?.username ||
+  'Guest User';
 
-      const userName = req.body.userName || req.user?.username || 'Guest User';
+
       const userPhone = req.body.userPhone || '';
       const userAddress = req.body.userAddress || '';
       console.log(`User ID: ${userId}, User Name: ${userName}, Phone: ${userPhone}`);
@@ -1170,6 +1180,8 @@ console.log("global.useMongoStorage:", global.useMongoStorage);
       if (!sessionUser) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      const userId = sessionUser.id;
+const userName = sessionUser.username;
       
       console.log(`Updating profile for user ID: ${sessionUser.id}`);
       console.log("Profile data received:", {
