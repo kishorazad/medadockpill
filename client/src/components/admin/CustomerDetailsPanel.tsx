@@ -45,7 +45,8 @@ import {
   Pill,
   ClipboardList,
   CalendarClock,
-  CreditCard
+  CreditCard,
+    Building
 } from 'lucide-react';
 import {
   DropdownMenu,
