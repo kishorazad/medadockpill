@@ -414,7 +414,10 @@ const UserManagement = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>{formatDate(user.createdAt)}</TableCell>
-                      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                      <TableCell
+  className="text-right"
+  onClick={(e) => e.stopPropagation()}
+>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon">
@@ -424,14 +427,15 @@ const UserManagement = () => {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem  onSelect={() => openEditDialog(user)}>
-                              <Info className="mr-2 h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
+                           <DropdownMenuItem onSelect={() => openUserDetailsDialog(user)}>
+  <Info className="mr-2 h-4 w-4" />
+  View Details
+</DropdownMenuItem>
                             
 <DropdownMenuItem
-  onClick={() => {
-    setShowUserDetailsDialog(false);
+  onSelect={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
     openEditDialog(user);
   }}
