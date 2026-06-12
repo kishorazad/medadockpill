@@ -149,7 +149,7 @@ const UserManagement = () => {
       
       // Directly query MongoDB collections
       const response = await apiRequest('GET', `/api/admin/mongodb-users?${queryParams.toString()}`);
-      return response.json();
+      return response;
     },
   });
 
@@ -192,7 +192,7 @@ const UserManagement = () => {
     mutationFn: async (userData) => {
       const { _id, ...rest } = userData;
       const response = await apiRequest('PUT', `/api/admin/mongodb-users/${_id}`, rest);
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -215,7 +215,7 @@ const UserManagement = () => {
   const deleteUserMutation = useMutation({
     mutationFn: async (userId) => {
       const response = await apiRequest('DELETE', `/api/admin/mongodb-users/${userId}`);
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -424,30 +424,16 @@ const UserManagement = () => {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => openUserDetailsDialog(user)}>
+                            <DropdownMenuItem  onSelect={() => openEditDialog(user)}>
                               <Info className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-    onSelect={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
+                            
+<DropdownMenuItem
+  onClick={() => {
+    setShowUserDetailsDialog(false);
 
-    console.log("EDIT CLICKED");
-
-    setEditUser({
-      _id: user._id,
-      username: user.username || "",
-      name: user.name || "",
-      email: user.email || "",
-      role: user.role || "customer",
-      phone: user.phone || "",
-      address: user.address || "",
-      pincode: user.pincode || "",
-      status: user.status || "active",
-    });
-
-    setShowEditDialog(true);
+    openEditDialog(user);
   }}
 >
   <Pencil className="mr-2 h-4 w-4" />
@@ -666,7 +652,13 @@ const UserManagement = () => {
       </Dialog>
 
       {/* Edit User Dialog */}
-      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+     <Dialog
+  open={showEditDialog}
+  onOpenChange={(open) => {
+    console.log("EDIT DIALOG OPEN:", open);
+    setShowEditDialog(open);
+  }}
+>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>Edit MongoDB User</DialogTitle>
